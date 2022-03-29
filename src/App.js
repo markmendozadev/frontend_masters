@@ -7,21 +7,18 @@ import Spinner from "./assets/Spinner.svg";
 function App() {
   const [quotes, setQuotes] = useState();
   const [isLoading, setIsLoading] = useState(false);
-  useEffect(() => {
-    async function fetchQuotes() {
-      const response = await fetch("https://api.adviceslip.com/advice");
-      const data = await response.json();
-      setQuotes(data.slip);
-    }
-    fetchQuotes();
-  }, []);
-  const onClickHandler = async () => {
+  async function fetchQuotes() {
     setIsLoading(true);
+
     const response = await fetch("https://api.adviceslip.com/advice");
     const data = await response.json();
     setIsLoading(false);
+
     setQuotes(data.slip);
-  };
+  }
+  useEffect(() => {
+    fetchQuotes();
+  }, []);
 
   return (
     <Container>
@@ -36,7 +33,7 @@ function App() {
             <div className="quotes_advice">"{quotes.advice}"</div>
             <img src={img_pattern} alt="divider" />
 
-            <button className="quotes__btn" onClick={onClickHandler}>
+            <button className="quotes__btn" onClick={fetchQuotes}>
               {isLoading ? (
                 <img src={Spinner} alt="dice" />
               ) : (
